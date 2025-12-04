@@ -1,146 +1,157 @@
-# LLM Judge — Reflective Coherence Evaluation
+# LLM Judge — Reflective Coherence Evaluation  
+### A high-clarity, research-grade framework for measuring internal reasoning stability in advanced language models.
 
-**LLM Judge** is an experimental evaluation instrument for probing the **internal coherence stability** of large language models, rather than just their surface outputs.
+LLM Judge is an evaluation instrument designed to make the *internal coherence stability* of language models observable, measurable, and comparable.  
+Rather than analyzing only surface responses, LLM Judge examines how a model’s internal reasoning trajectory behaves under reflective pressure.
 
-It operationalizes the **Reflective Alignment Architecture (RAA)** and the **Reflective Duality Layer (RDL)** proposed in:
+It is built upon two components:
 
-> Holm, N. (2025). *Reflective Alignment Architecture and the Reflective Duality Layer.*
+- **Reflective Alignment Architecture (RAA)**  
+- **Reflective Duality Layer (RDL)**
 
-The current prototype focuses on a **Level-2 Reflective Viewer (L2)** built in Streamlit.
+Both originate from *Holm, N. (2025). Reflective Alignment Architecture and the Reflective Duality Layer.*
+
+The current prototype includes a **Level-2 Reflective Viewer (L2)** implemented in Streamlit.
 
 ---
 
 ## 1. Motivation
 
-Frontier language models now show:
-
+Modern language models demonstrate:
 - multi-step reasoning  
-- self-critique and “reflection”  
+- self-critique and internal reflection  
 - long-horizon planning  
-- context-dependent moral behavior  
+- context-adaptive moral behavior  
 
-Yet most alignment and safety work still evaluates **only final answers** on benchmarks or curated test sets.
+Yet nearly all evaluation frameworks still measure **only the final answer**.
 
-This hides a critical failure mode:
+This creates a critical blind spot:
 
-> A model can look stable and “aligned” in its outputs while its **internal reasoning trajectory** is brittle, self-contradictory, or drifting under pressure.
+> A model can appear aligned and stable in its outputs while its **internal reasoning trajectory** is brittle, inconsistent, or drifting under pressure.
 
-**LLM Judge** is an attempt to make those internal dynamics **observable, measurable, and comparable**.
+LLM Judge directly targets this gap by evaluating *how* the model thinks, not just *what* it outputs.
 
 ---
 
-## 2. Core Idea
+## 2. Method: Forward vs Reflective Duality
 
-For each test prompt, LLM Judge runs two paired calls:
+Each evaluation consists of two coordinated passes:
 
-1. **Forward pass**  
-   - The model answers normally.
+### **Forward Pass**  
+The model answers the prompt normally.
 
-2. **Reflective pass**  
-   - The model is asked to reflect on, critique, or revise its own reasoning under a structured “reflective prompt.”
+### **Reflective Pass**  
+The model is instructed to critique, revise, or re-express its reasoning using a structured reflective instruction.
 
-The RDL then compares the **forward trajectory** and the **reflective trajectory** along several axes:
+The RDL then compares the **forward trajectory** and the **reflective trajectory** along several stability axes:
 
-- consistency and self-agreement  
+- self-agreement  
 - justification quality  
-- value / constraint adherence  
-- resistance to drift under perturbation  
-- presence of rationalization vs. genuine correction  
+- adherence to constraints and values  
+- resistance to perturbation  
+- rationalization vs. genuine correction  
 
-These are summarized into **coherence-stability metrics**, which the dashboard displays and aggregates.
+These comparisons produce **coherence-stability metrics**, which feed into the dashboard and analytical tools.
 
 ---
 
-## 3. Current Features (v1 prototype)
+## 3. Current Prototype Features (v1)
 
-- 🔹 **JSONL test harness**  
-  - Define evaluation prompts and settings in `tests.jsonl`  
-  - Supports multiple models / APIs (via simple adapter pattern)
+### JSONL Test Harness  
+- Define evaluation prompts in `tests.jsonl`  
+- Supports multiple model APIs through lightweight adapters  
 
-- 🔹 **Paired forward + reflective evaluation loop**  
-  - Saves full traces to `results_L2.jsonl` (or similar)  
-  - Each record includes prompts, responses, scores, and metadata
+### Paired Forward + Reflective Execution Loop  
+- Saves full reasoning traces to `results/*.jsonl`  
+- Captures prompts, responses, metadata, and metrics  
 
-- 🔹 **Level-2 Streamlit dashboard (`streamlit_app_L2.py`)**
-  - Upload a results file and explore:
-    - per-prompt metrics  
-    - model-level aggregates  
-    - failure signatures (drift, rationalization, collapse, etc.)  
-  - Filter by model, test set, or tag  
-  - Inspect individual traces (forward vs reflective)
+### Level-2 Reflective Dashboard  
+Allows investigation into:
+- per-prompt stability  
+- model-level aggregates  
+- drift/collapse/rationalization signatures  
+- forward vs reflective comparison  
 
-- 🔹 **Early RDL-based metrics**
-  - Coherence / divergence scores between trajectories  
-  - Simple “stability index” visualizations  
-  - Hooks for plugging in new metrics as the theory matures
+### Early RDL-Based Metrics  
+- coherence and divergence measurement  
+- basic stability index plots  
+- extensible metric hook system  
 
-- 🔹 **Model-agnostic design**
-  - Anything callable via an API (OpenAI, Anthropic, local models) can be wired in through a small adapter.
+### Model-Agnostic Design  
+Compatible with OpenAI, Anthropic, and local hosted models.
 
 ---
 
 ## 4. Repository Structure
 
-Suggested structure (adjust to match your local files):
-
-```bash
+```
 LLM-Judge/
-├─ app/
-│  ├─ streamlit_app_L2.py        # L2 Reflective Viewer dashboard
-│  ├─ requirements.txt           # Python dependencies
-│  └─ config.example.yaml        # Example config for API keys, endpoints
 │
-├─ core/
-│  ├─ judge.py                   # Main forward+reflective evaluation loop
-│  ├─ rdl_metrics.py             # Coherence / stability metric implementations
-│  ├─ models_openai.py           # Example model adapter(s)
-│  └─ utils.py
-│
-├─ tests/
-│  ├─ tests_example.jsonl        # Example test set
-│  └─ results_example_L2.jsonl   # Sample results for trying the dashboard
-│
-├─ docs/
-│  ├─ overview.md                # Longer conceptual description
-│  ├─ architecture.png           # System diagram
-│  └─ screenshots/               # Dashboard screenshots
-│
-└─ README.md
----
-
-## 🚀 Installation / Quick Start
-
-git clone https://github.com/EnlightenedAI-Lab/LLM-Judge.git
-cd LLM-Judge
-pip install -r requirements.txt
-
-## 🧪 Run a Test Evaluation
-
-python src/llm_judge/runner.py \
-  --model gpt-4o-mini \
-  --tests src/llm_judge/tests.jsonl \
-  --out results/run1.jsonl
-
-## 📊 View the Reflective Stability Metrics
-
-from llm_judge.metrics_core import compute_metrics
-
-forward = "Example forward answer."
-reflective = "Revised answer after reflection."
-
-compute_metrics(forward, reflective)
-
-## 📁 Project Structure
-
-LLM-Judge/
 ├── src/llm_judge/
 │   ├── client.py
 │   ├── runner.py
 │   ├── metrics_core.py
 │   ├── tests.jsonl
 │   └── __init__.py
+│
 ├── results/
 │   └── .gitkeep
+│
 ├── docs/
+│   ├── overview.md
+│   ├── architecture.png
+│   └── screenshots/
+│
 ├── README.md
 └── requirements.txt
+```
+
+---
+
+## 5. Installation
+
+```bash
+git clone https://github.com/EnlightenedAI-Lab/LLM-Judge.git
+cd LLM-Judge
+pip install -r requirements.txt
+```
+
+---
+
+## 6. Run a Test Evaluation
+
+```bash
+python src/llm_judge/runner.py \
+  --model gpt-4o-mini \
+  --tests src/llm_judge/tests.jsonl \
+  --out results/run1.jsonl
+```
+
+---
+
+## 7. Compute Metrics Programmatically
+
+```python
+from llm_judge.metrics_core import compute_metrics
+
+forward = "Example forward answer."
+reflective = "Revised answer after reflection."
+
+compute_metrics(forward, reflective)
+```
+
+---
+
+## 8. Purpose and Vision
+
+LLM Judge is a step toward reflective-layer evaluation:  
+a methodology for examining whether the *process* by which an AI system arrives at its outputs remains stable, interpretable, and alignable.
+
+Future iterations incorporate:
+
+- Reflective Duality Layer (full mathematical formulation)  
+- richer trajectory comparisons  
+- multi-model benchmarking  
+- research-grade visualization modules  
+
+LLM Judge aims to become a foundational instrument for studying the internal coherence properties of next-generation AI systems.
