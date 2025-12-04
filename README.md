@@ -1,3 +1,7 @@
+# **ENLIGHTENED AI RESEARCH LAB**
+### Advancing the science of reflective stability, internal coherence, and moral alignment in frontier AI systems.
+
+---
 # LLM Judge — Reflective Coherence Evaluation  
 ### A high-clarity, research-grade framework for measuring internal reasoning stability in advanced language models.
 
