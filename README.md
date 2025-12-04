@@ -106,3 +106,41 @@ LLM-Judge/
 │  └─ screenshots/               # Dashboard screenshots
 │
 └─ README.md
+---
+
+## 🚀 Installation / Quick Start
+
+git clone https://github.com/EnlightenedAI-Lab/LLM-Judge.git
+cd LLM-Judge
+pip install -r requirements.txt
+
+## 🧪 Run a Test Evaluation
+
+python src/llm_judge/runner.py \
+  --model gpt-4o-mini \
+  --tests src/llm_judge/tests.jsonl \
+  --out results/run1.jsonl
+
+## 📊 View the Reflective Stability Metrics
+
+from llm_judge.metrics_core import compute_metrics
+
+forward = "Example forward answer."
+reflective = "Revised answer after reflection."
+
+compute_metrics(forward, reflective)
+
+## 📁 Project Structure
+
+LLM-Judge/
+├── src/llm_judge/
+│   ├── client.py
+│   ├── runner.py
+│   ├── metrics_core.py
+│   ├── tests.jsonl
+│   └── __init__.py
+├── results/
+│   └── .gitkeep
+├── docs/
+├── README.md
+└── requirements.txt
