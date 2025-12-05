@@ -1,0 +1,142 @@
+# LLM Judge — Quick Usage Guide
+
+This guide provides a concise, practical path for running the **LLM Judge — Reflective Coherence Evaluation** system. It is meant as the fastest way to reproduce an evaluation and inspect results.
+
+---
+
+## 1. Prerequisites
+
+You will need:
+
+- **Python 3.10+**  
+- Terminal (macOS/Linux) or PowerShell (Windows)  
+- An API key for a compatible model provider (e.g., OpenAI)  
+- The repository cloned locally
+
+Clone and enter the repository:
+
+```bash
+git clone https://github.com/EnlightenedAI-Lab/LLM-Judge.git
+cd LLM-Judge
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Set your API key:
+
+```bash
+# macOS / Linux
+export OPENAI_API_KEY="your_api_key_here"
+
+# Windows (PowerShell)
+$env:OPENAI_API_KEY="your_api_key_here"
+```
+
+---
+
+## 2. Running an Evaluation
+
+Use the main runner to perform a forward + reflective execution loop.
+
+Example command:
+
+```bash
+python src/llm_judge/runner.py \
+  --model gpt-4o-mini \
+  --tests src/llm_judge/tests.jsonl \
+  --out results/run1.jsonl
+```
+
+This will:
+
+- Read test items from `tests.jsonl`
+- Run **forward reasoning**
+- Run **reflective reasoning**
+- Save outputs + metrics to `results/run1.jsonl`
+
+---
+
+## 3. Viewing Results in the Reflective Viewer (L2 Dashboard)
+
+Launch the Streamlit dashboard:
+
+```bash
+streamlit run src/llm_judge/L2_stability_viewer.py
+```
+
+Then open the local URL (typically `http://localhost:8501`) to:
+
+- Load result files  
+- Inspect forward vs reflective trajectories  
+- Examine drift, collapse, rationalization, and coherence-stability metrics  
+- Explore prompt-level and model-level summaries  
+
+---
+
+## 4. Structure of tests.jsonl
+
+Each test entry is one JSON object per line:
+
+```json
+{
+  "id": "ethical_001",
+  "category": "ethical_ambiguity",
+  "prompt": "You are given a morally ambiguous situation...",
+  "instruction": "Evaluate your reasoning and check for drift.",
+  "metadata": {
+    "source": "prototype",
+    "difficulty": "medium"
+  }
+}
+```
+
+You can add any metadata you need.  
+The evaluation framework is category-agnostic.
+
+---
+
+## 5. Repository Layout (Minimal)
+
+```
+LLM-Judge/
+├── src/llm_judge/
+│   ├── runner.py
+│   ├── client.py
+│   ├── metrics_core.py
+│   ├── tests.jsonl
+│   ├── L2_stability_viewer.py
+│   └── __init__.py
+├── results/
+├── README.md
+├── INSTALL.md
+├── USAGE.md
+├── ABOUT.md
+├── VISION.md
+├── SCIENCE.md
+├── ROADMAP.md
+├── FUNDING.md
+└── requirements.txt
+```
+
+---
+
+## 6. Next Steps
+
+For researchers:
+
+- Swap to your own model adapter (OpenAI, Anthropic, local models)  
+- Expand `tests.jsonl` with new categories  
+- Extend `metrics_core.py` for additional coherence metrics  
+
+For funders & labs:
+
+- See `SCIENCE.md` and `ROADMAP.md` for the long-term research direction  
+- Use this guide to reproduce one evaluation end-to-end  
+- Contact for collaboration:
+
+**Website:** https://www.enlightenedai.ai  
+**Email:** research@enlightenedai.ai
