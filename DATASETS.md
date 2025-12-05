@@ -1,93 +1,117 @@
-# **Reflective Alignment Datasets**
+# Datasets & Artifacts
 
-The Enlightened AI Research Lab maintains a growing collection of research-grade  
-datasets designed to evaluate **internal coherence stability**, **reflective reasoning**,  
-and **perturbation resilience** in advanced language models.
+This page summarizes the datasets, evaluation logs, and related artifacts produced by the **Enlightened AI Research Lab** for the LLM Judge / Reflective Alignment Architecture (RAA) program.
 
-All datasets support the Reflective Alignment Architecture (RAA) and the  
-Reflective Duality Layer (RDL).
+We distinguish between:
 
----
-
-## **1. Reflective Alignment Dataset (v1)**  
-**Zenodo DOI:** https://zenodo.org/records/17751263  
-
-A curated collection of prompts engineered for evaluating:
-
-- reflective reasoning drift  
-- internal contradiction patterns  
-- perturbation-response stability  
-- multi-layer coherence dynamics  
-
-### Contains:
-- ~300 foundational reflective prompts  
-- paired forward vs reflective test sets  
-- contradiction pressure tests  
-- divergence chains  
-- temporal offset tests  
-
-This dataset forms the backbone of **LLM Judge (L1–L2)** evaluations.
+- **Core alignment datasets** — curated for reflective coherence and stability analysis.  
+- **Supporting artifacts** — logs, traces, diagrams, and documentation that make experiments auditable.  
+- **Planned releases** — clearly marked as *In preparation*.
 
 ---
 
-## **2. Expansion Sets (Upcoming)**
+## 1. Released Datasets
 
-Throughout 2025–2026, we are extending the dataset suite to include:
+### 1.1 Reflective Alignment Lexicon (v1.0)
 
-### **Ethical Ambiguity Chains**
-Long-horizon moral reasoning sequences designed to test  
-value consistency and reflective justification behavior.
+- **Type:** Conceptual / terminological dataset  
+- **Scope:** Core vocabulary for reflective alignment, coherence, and moral intelligence  
+- **Entries:** ~300+ terms (v1.0)  
+- **Format:** PDF (primary), with planned structured exports (CSV / JSON)  
+- **Host:** Zenodo  
+- **DOI / Link:** https://zenodo.org/records/17751263  
 
-### **Stress-Test Perturbation Sets**
-Paired inputs with noise, contradiction, or temporal distortion  
-to evaluate breakdown points and collapse gradients.
+**Description**
 
-### **Self-Critique & Rationalization Chains**
-Multi-step reflective reasoning sequences that expose  
-rationalization artifacts, collapse loops, and stability thresholds.
+The Reflective Alignment Lexicon defines the conceptual backbone of the RAA and LLM Judge work.  
+It provides:
 
-### **Consistency Loops**
-Brittle-logic tests constructed to measure the  
-*Moral Coherence Index (MCI★)* and cross-layer rigidity.
+- Canonical names and short definitions  
+- Groupings around reflection, coherence, care, and stability  
+- A shared language for research papers, dashboards, and future datasets  
 
----
+**Intended use**
 
-## **3. Alignment Benchmarks (Future Releases)**
+- To standardize terminology in alignment research  
+- To annotate prompts, failure modes, and reasoning traces in later datasets  
+- To support interpretable metrics and model-internal audits  
 
-We are working toward the first full **Reflective-Alignment Benchmark Suite**, including:
-
-- RDL stability indices (Ψ profiles)
-- Coherence-collapse mapping
-- Signature clustering datasets
-- Failure-mode atlases for reflective reasoning
-
-These benchmarks will be openly available for labs, universities,  
-and safety groups seeking transparent model evaluation instruments.
+If you use the Lexicon in a paper or project, please cite the Zenodo record above.
 
 ---
 
-## **4. Contributing Data**
+## 2. Evaluation Logs & Traces
 
-We invite contributions from:
+These artifacts are produced when running the L2 Reflective Viewer and related tools.  
+Public versions will be released incrementally as we stabilize formats and privacy constraints.
 
-- research labs  
-- academic groups  
-- industry AI teams  
-- safety organizations  
+### 2.1 L2 Reflective Coherence Runs (*Planned public sample*)
 
-### Contribution Guidelines:
-All contributions must follow:
+- **Type:** JSONL evaluation traces  
+- **Contents (per row):**
+  - Prompt metadata (ID, category, scenario description)  
+  - Forward response  
+  - Reflective response  
+  - Coherence / stability metrics  
+  - Tags for drift, collapse, rationalization, and self-correction  
+- **Status:** In preparation (selected runs will be anonymized and published)  
+- **Planned host:** Zenodo + GitHub `results/` samples  
 
-- reproducibility standards  
-- annotation schemas  
-- reflective-evaluation formatting  
+When released, a dedicated section here will describe:
 
-See **CONTRIBUTING.md** for full instructions.
+- Exact schema of each JSONL file  
+- Example analysis notebooks  
+- How to reproduce the runs with `runner.py` and the dashboards.
 
 ---
 
-## **Contact**
+## 3. Future Dataset Roadmap
 
-**Email:** research@enlightenedai.ai  
-**Website:** https://www.enlightenedai.ai  
-**GitHub:** https://github.com/EnlightenedAI-Lab
+We are actively designing the following public releases.  
+Details may evolve as the research matures.
+
+### 3.1 Reflective Alignment Dataset (RAA-Eval v1)
+
+- **Goal:** A benchmark dataset for *reasoning-trajectory stability*, not just final answers.  
+- **Planned components:**
+  - 500–1,000+ prompts spanning ethical ambiguity, temporal drift, constraint-pressure, and self-critique chains  
+  - Paired forward + reflective calls per model  
+  - Human-curated tags for failure modes and repair patterns  
+- **Planned formats:** JSONL + documentation in `docs/`  
+- **Status:** Design and pilot phase.
+
+### 3.2 Coherence Metrics Sandbox
+
+- **Goal:** Open repository of derived metrics for:
+  - Divergence, collapse, and rationalization patterns  
+  - Rigidity and hallucination signatures  
+  - Long-horizon self-consistency  
+- **Planned artifacts:**
+  - CSV/Parquet tables with per-run metrics  
+  - Lightweight plotting / analysis notebooks  
+
+---
+
+## 4. Access & Use
+
+Unless otherwise noted, datasets and artifacts released under this repository will be:
+
+- **Free to use for research and safety work**, subject to the license specified in each record.  
+- Documented with:
+  - Clear schema descriptions  
+  - Example code snippets  
+  - Versioning notes (v1.0, v1.1, …)  
+
+If you are:
+
+- A **lab or safety team** interested in early access, or  
+- A **funder** exploring support for larger-scale dataset curation,
+
+please contact:
+
+- **Email:** research@enlightenedai.ai  
+- **Website:** https://www.enlightenedai.ai
+
+We welcome collaboration on joint dataset design, annotation, and validation.
+
+---
